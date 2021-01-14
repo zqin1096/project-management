@@ -1,5 +1,7 @@
 package com.jrp.pma.entities;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,7 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Employee {
@@ -22,11 +25,13 @@ public class Employee {
 
 	// Operations on Project (parent) cascade to Employee (children).
 	// Lazy approach only fetch Employee when necessary.
-	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH,
+	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH,
 			CascadeType.PERSIST }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "project_id")
-	private Project project; // Many employees are assigned to one project. Add a new column in Employee
-								// table to show the assigned project (foreign key).
+	@JoinTable(name = "project_employee", joinColumns = @JoinColumn(name = "employee_id"), inverseJoinColumns = @JoinColumn(name = "project_id"))
+	private List<Project> projects;
+	// A project can be assigned to many employees, and a employee can be assigned
+	// to many projects at the same time. Create a joined table called
+	// project_employee.
 
 	public Employee() {
 
@@ -39,12 +44,12 @@ public class Employee {
 		this.email = email;
 	}
 
-	public Project getProject() {
-		return project;
+	public List<Project> getProjects() {
+		return projects;
 	}
 
-	public void setProject(Project project) {
-		this.project = project;
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
 	}
 
 	public long getEmployeeId() {

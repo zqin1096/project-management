@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jrp.pma.dao.EmployeeRepository;
 import com.jrp.pma.dao.ProjectRepository;
@@ -38,23 +37,16 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String createProject(@ModelAttribute(value = "project") Project project,
-			@RequestParam List<Long> employees) {
+	public String createProject(@ModelAttribute(value = "project") Project project) {
 		// The name "employees" need to be the same as the th:field in the html.
 		// Save the new project to the database.
+
+		// If multiple employees are assigned to a project, Hibernate will create
+		// corresponding records in the joined table.
 		projectRepository.save(project);
 
-		// Employee table need to be updated.
-		Iterable<Employee> selectedEmployees = employeeRepository.findAllById(employees);
-
-		for (Employee employee : selectedEmployees) {
-			// Set the project for the employee and save it to the database.
-			employee.setProject(project);
-			employeeRepository.save(employee);
-		}
-
 		// Redirection prevents duplicate submissions.
-		return "redirect:/projects/new";
+		return "redirect:/projects";
 	}
 
 	@GetMapping
