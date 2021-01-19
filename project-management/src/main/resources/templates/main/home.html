@@ -31,6 +31,10 @@
 			</div>
 			<div class="col-md-4">
 				<canvas id="myPieChart" height="50" width="50"></canvas>
+				<script>
+				// Get data in JS.
+				let chartData = "[[${projectStatusCount}]]"
+				</script>
 			</div>
 		</div>
 
@@ -43,7 +47,7 @@
 						<tr>
 							<th>First Name</th>
 							<th>Last Stage</th>
-							<th>Email Address</th>
+							<th>Project Count</th>
 						</tr>
 					</thead>
 
@@ -51,7 +55,7 @@
 						<tr th:each="employee : ${employees}">
 							<td th:text="${employee.firstName}" />
 							<td th:text="${employee.lastName}" />
-							<td th:text="${employee.email}" />
+							<td th:text="${employee.projectCount}" />
 						</tr>
 					</tbody>
 
