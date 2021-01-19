@@ -16,7 +16,7 @@ import javax.persistence.ManyToMany;
 public class Employee {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long employeeId;
 
 	private String firstName;
@@ -31,7 +31,9 @@ public class Employee {
 	private List<Project> projects;
 	// A project can be assigned to many employees, and a employee can be assigned
 	// to many projects at the same time. Create a joined table called
-	// project_employee.
+	// project_employee. The name of the join table is assumed to be the table
+	// names of the associated primary tables concatenated together using an
+	// underscore.
 
 	public Employee() {
 
