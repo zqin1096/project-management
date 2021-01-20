@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,14 +17,14 @@ import com.jrp.pma.dao.ProjectRepository;
 import com.jrp.pma.dto.ChartData;
 import com.jrp.pma.dto.EmployeeProject;
 import com.jrp.pma.entities.Project;
-import com.jrp.pma.springExample.Car;
 
 @Controller
 
 public class HomeController {
 
-	@Autowired
-	Car car;
+	// Read a value from application.properties.
+	@Value("${version}")
+	private String ver;
 
 	@Autowired
 	ProjectRepository projectRepository; // The actual Bean exists within the spring framework for CrudRepository.
@@ -33,6 +34,7 @@ public class HomeController {
 
 	@GetMapping("/")
 	public String displayHome(Model model) throws JsonProcessingException {
+		model.addAttribute("version", ver);
 		Map<String, Object> map = new HashMap<>();
 
 		List<Project> projects = projectRepository.findAll();
