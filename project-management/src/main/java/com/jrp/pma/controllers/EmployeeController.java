@@ -15,8 +15,25 @@ import com.jrp.pma.entities.Employee;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-	@Autowired
+	// 1. Field injection.
+	// @Autowired would not work if there is no @Controller annotation.
+//	@Autowired
+//	EmployeeRepository employeeRepository;
+
+	// 2. Constructor injection. @Autowired is not needed.
+//	EmployeeRepository employeeRepository;
+//
+//	public EmployeeController(EmployeeRepository employeeRepository) {
+//		this.employeeRepository = employeeRepository;
+//	}
+
+	// 3. Setter injection. @Autowired is needed.
 	EmployeeRepository employeeRepository;
+
+	@Autowired
+	public void setEmployeeRepository(EmployeeRepository employeeRepository) {
+		this.employeeRepository = employeeRepository;
+	}
 
 	@GetMapping("/new")
 	public String displayEmployeeForm(Model model) {

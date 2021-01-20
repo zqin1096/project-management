@@ -16,13 +16,17 @@ import com.jrp.pma.dao.ProjectRepository;
 import com.jrp.pma.dto.ChartData;
 import com.jrp.pma.dto.EmployeeProject;
 import com.jrp.pma.entities.Project;
+import com.jrp.pma.springExample.Car;
 
 @Controller
 
 public class HomeController {
 
 	@Autowired
-	ProjectRepository projectRepository;
+	Car car;
+
+	@Autowired
+	ProjectRepository projectRepository; // The actual Bean exists within the spring framework for CrudRepository.
 
 	@Autowired
 	EmployeeRepository employeeRepository;

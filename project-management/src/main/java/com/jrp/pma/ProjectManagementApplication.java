@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.jrp.pma.dao.EmployeeRepository;
 import com.jrp.pma.dao.ProjectRepository;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = { "com.jrp.pma", "com.jrp.utils" })
 public class ProjectManagementApplication {
 
 	@Autowired
@@ -19,6 +19,14 @@ public class ProjectManagementApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectManagementApplication.class, args);
 	}
+
+//	@Bean
+//	public Car newCar() {
+//		Engine engine = new Engine();
+//		Doors doors = new Doors();
+//		Tires tires = new Tires();
+//		return new Car(engine, doors, tires);
+//	}
 
 //	@Bean
 //	CommandLineRunner runner() {
