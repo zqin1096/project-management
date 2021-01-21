@@ -19,7 +19,6 @@ import com.jrp.pma.dto.EmployeeProject;
 import com.jrp.pma.entities.Project;
 
 @Controller
-
 public class HomeController {
 
 	// Read a value from application.properties.
@@ -34,6 +33,9 @@ public class HomeController {
 
 	@GetMapping("/")
 	public String displayHome(Model model) throws JsonProcessingException {
+		// Add the envVersionNum in the run configuration (eclipse environment).
+		// Right click pom.vml, clean, then install. Run the jar file (windows
+		// environment).
 		model.addAttribute("version", ver);
 		Map<String, Object> map = new HashMap<>();
 
