@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.jrp.pma.dao.EmployeeRepository;
 import com.jrp.pma.entities.Employee;
+import com.jrp.pma.services.EmployeeService;
 
 @Controller
 @RequestMapping("/employees")
@@ -28,11 +28,11 @@ public class EmployeeController {
 //	}
 
 	// 3. Setter injection. @Autowired is needed.
-	EmployeeRepository employeeRepository;
+	EmployeeService employeeService;
 
 	@Autowired
-	public void setEmployeeRepository(EmployeeRepository employeeRepository) {
-		this.employeeRepository = employeeRepository;
+	public void setEmployeeRepository(EmployeeService employeeService) {
+		this.employeeService = employeeService;
 	}
 
 	@GetMapping("/new")
@@ -46,13 +46,13 @@ public class EmployeeController {
 
 	@PostMapping("/save")
 	public String createEmployee(@ModelAttribute(value = "employee") Employee employee) {
-		employeeRepository.save(employee);
+		employeeService.save(employee);
 		return "redirect:/employees/new";
 	}
 
 	@GetMapping
 	public String displayEmployees(Model model) {
-		model.addAttribute("employees", employeeRepository.findAll());
+		model.addAttribute("employees", employeeService.getAll());
 		return "employees/list-employees";
 	}
 }

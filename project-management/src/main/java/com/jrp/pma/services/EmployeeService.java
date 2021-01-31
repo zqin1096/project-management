@@ -1,8 +1,13 @@
 package com.jrp.pma.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import com.jrp.pma.dao.EmployeeRepository;
+import com.jrp.pma.dto.EmployeeProject;
+import com.jrp.pma.entities.Employee;
 
 @Service
 public class EmployeeService {
@@ -38,12 +43,26 @@ public class EmployeeService {
 //	@Autowired
 //	IStaffRepository iStaffRepository;
 
-	IStaffRepository iStaffRepository;
+//	IStaffRepository iStaffRepository;
+//
+//	@Autowired
+//	@Qualifier("staffRepositoryImpl1")
+//	public void setiStaffRepository(IStaffRepository iStaffRepository) {
+//		this.iStaffRepository = iStaffRepository;
+//	}
 
 	@Autowired
-	@Qualifier("staffRepositoryImpl1")
-	public void setiStaffRepository(IStaffRepository iStaffRepository) {
-		this.iStaffRepository = iStaffRepository;
+	EmployeeRepository employeeRepository;
+
+	public Employee save(Employee employee) {
+		return employeeRepository.save(employee);
 	}
 
+	public List<Employee> getAll() {
+		return employeeRepository.findAll();
+	}
+
+	public List<EmployeeProject> employeeProjects() {
+		return employeeRepository.employeeProjects();
+	}
 }

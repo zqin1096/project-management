@@ -10,20 +10,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.jrp.pma.dao.EmployeeRepository;
-import com.jrp.pma.dao.ProjectRepository;
 import com.jrp.pma.entities.Employee;
 import com.jrp.pma.entities.Project;
+import com.jrp.pma.services.EmployeeService;
+import com.jrp.pma.services.ProjectService;
 
 @Controller
 @RequestMapping("/projects")
 public class ProjectController {
 
 	@Autowired
-	ProjectRepository projectRepository; // Spring injects projectRepository when ProjectController is created.
+	ProjectService projectService; // Spring injects projectRepository when ProjectController is created.
 
 	@Autowired
-	EmployeeRepository employeeRepository;
+	EmployeeService employeeService;
 
 	@RequestMapping("/new")
 	public String displayProjectForm(Model model) {
@@ -31,7 +31,7 @@ public class ProjectController {
 
 		Project project = new Project();
 		model.addAttribute("project", project);
-		List<Employee> employees = employeeRepository.findAll();
+		List<Employee> employees = employeeService.getAll();
 		model.addAttribute("employees", employees);
 		return "projects/new-project";
 	}
@@ -43,7 +43,7 @@ public class ProjectController {
 
 		// If multiple employees are assigned to a project, Hibernate will create
 		// corresponding records in the joined table.
-		projectRepository.save(project);
+		projectService.save(project);
 
 		// Redirection prevents duplicate submissions.
 		return "redirect:/projects";
@@ -51,7 +51,7 @@ public class ProjectController {
 
 	@GetMapping
 	public String displayProjects(Model model) {
-		model.addAttribute("projects", projectRepository.findAll());
+		model.addAttribute("projects", projectService.getAll());
 		return "projects/list-projects";
 	}
 }

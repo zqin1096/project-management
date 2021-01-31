@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jrp.pma.dao.EmployeeRepository;
-import com.jrp.pma.dao.ProjectRepository;
 import com.jrp.pma.dto.ChartData;
 import com.jrp.pma.dto.EmployeeProject;
 import com.jrp.pma.entities.Project;
+import com.jrp.pma.services.EmployeeService;
+import com.jrp.pma.services.ProjectService;
 
 @Controller
 public class HomeController {
@@ -26,10 +26,10 @@ public class HomeController {
 	private String ver;
 
 	@Autowired
-	ProjectRepository projectRepository; // The actual Bean exists within the spring framework for CrudRepository.
+	ProjectService projectService; // The actual Bean exists within the spring framework for CrudRepository.
 
 	@Autowired
-	EmployeeRepository employeeRepository;
+	EmployeeService employeeService;
 
 	@GetMapping("/")
 	public String displayHome(Model model) throws JsonProcessingException {
@@ -39,10 +39,10 @@ public class HomeController {
 		model.addAttribute("version", ver);
 		Map<String, Object> map = new HashMap<>();
 
-		List<Project> projects = projectRepository.findAll();
+		List<Project> projects = projectService.getAll();
 		model.addAttribute("projects", projects);
 
-		List<ChartData> projectData = projectRepository.getProjectStatus();
+		List<ChartData> projectData = projectService.getProjectStatus();
 
 		// Convert projectData to a JSON object.
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -51,7 +51,7 @@ public class HomeController {
 
 		model.addAttribute("projectStatusCount", json);
 
-		List<EmployeeProject> employeesProjectCount = employeeRepository.employeeProjects();
+		List<EmployeeProject> employeesProjectCount = employeeService.employeeProjects();
 		model.addAttribute("employees", employeesProjectCount);
 
 		return "main/home";
