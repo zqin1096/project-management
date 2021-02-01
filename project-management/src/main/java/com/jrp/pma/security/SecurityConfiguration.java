@@ -1,5 +1,8 @@
 package com.jrp.pma.security;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,12 +15,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+	// h2 database.
+	@Autowired
+	DataSource dataSource;
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		// Define authentication mechanism.
 		// Define new user name and password. The default user name is "user".
-		auth.inMemoryAuthentication().withUser("myuser").password("pass").roles("USER").and().withUser("zhaoyin")
-				.password("pass2").roles("USER").and().withUser("managerUser").password("pass3").roles("ADMIN");
+		// withDefaultSchema() creates a USERS table and AUTHORITIES table in the h2
+		// database.
+		auth.jdbcAuthentication().dataSource(dataSource).withDefaultSchema().withUser("myuser").password("pass")
+				.roles("USER").and().withUser("zhaoyin").password("pass2").roles("USER").and().withUser("managerUser")
+				.password("pass3").roles("ADMIN");
 	}
 
 	// Need a Password encoder.
@@ -34,6 +45,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		// formLogin() is used to support form based authentication.
 		// Only ADMIN can add new projects and employees.
 		httpSecurity.authorizeRequests().antMatchers("/projects/new").hasRole("ADMIN").antMatchers("/employees/new")
-				.hasRole("ADMIN").antMatchers("/").authenticated().and().formLogin();
+				.hasRole("ADMIN").antMatchers("h2-console/**").permitAll().antMatchers("/").authenticated().and()
+				.formLogin();
+
+		// Access the /h2-console.
+		httpSecurity.csrf().disable();
+		httpSecurity.headers().frameOptions().disable();
 	}
 }
