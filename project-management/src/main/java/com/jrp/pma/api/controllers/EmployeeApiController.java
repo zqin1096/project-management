@@ -2,6 +2,8 @@ package com.jrp.pma.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -37,14 +39,14 @@ public class EmployeeApiController {
 	// Need the CSRF token in the request header.
 	@PostMapping(consumes = "application/json")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Employee creatEmployee(@RequestBody Employee employee) {
+	public Employee creatEmployee(@RequestBody @Valid Employee employee) {
 		return employeeRepository.save(employee);
 	}
 
 	// Need the CSRF token.
 	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public Employee updatEmployee(@RequestBody Employee employee, @PathVariable("id") Long id) {
+	public Employee updatEmployee(@RequestBody @Valid Employee employee, @PathVariable("id") Long id) {
 		Employee e = employeeRepository.findById(id).get();
 		e.setFirstName(employee.getFirstName());
 		e.setLastName(employee.getLastName());
