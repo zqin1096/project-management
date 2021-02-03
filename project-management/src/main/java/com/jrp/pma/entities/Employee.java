@@ -3,7 +3,6 @@ package com.jrp.pma.entities;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jrp.pma.validators.UniqueValue;
 
 @Entity
 public class Employee {
@@ -33,8 +33,9 @@ public class Employee {
 	@NotNull
 	@Size(min = 1, max = 50)
 	private String lastName;
+	// @Column does nothing since spring.jpa.hibernate.ddl-auto=none.
 	@Email
-	@Column(unique = true, nullable = false)
+	@UniqueValue
 	private String email;
 
 	// Operations on Project (parent) cascade to Employee (children).
