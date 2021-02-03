@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.jrp.pma.dto.EmployeeProject;
 import com.jrp.pma.entities.Employee;
 
+// Serve spring data rest at a different end point.
+@RepositoryRestResource(collectionResourceRel = "apiemployees", path = "apiemployees")
 public interface EmployeeRepository extends PagingAndSortingRepository<Employee, Long> {
 
 	@Override

@@ -101,5 +101,8 @@ public class Employee {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 }
+/*
+ * If spring data rest is added, then by default, localhost:8080/employees will
+ * return the list of employees.
+ */
