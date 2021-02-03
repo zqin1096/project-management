@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.jrp.pma.entities.Employee;
 import com.jrp.pma.services.EmployeeService;
@@ -40,6 +41,7 @@ public class EmployeeController {
 		// Bind an empty Java object Project called "project" to the form.
 
 		Employee employee = new Employee();
+		System.out.println(employee.getEmployeeId());
 		model.addAttribute("employee", employee);
 		return "employees/new-employee";
 	}
@@ -55,4 +57,18 @@ public class EmployeeController {
 		model.addAttribute("employees", employeeService.getAll());
 		return "employees/list-employees";
 	}
+
+	@GetMapping(value = "/update", params = { "id" })
+	public String updateEmployee(Model model, @RequestParam("id") long id) {
+		Employee employee = employeeService.getEmployeeById(id);
+		model.addAttribute("employee", employee);
+		return "employees/new-employee";
+	}
+
+	@GetMapping(value = "/delete", params = { "id" })
+	public String deleteEmployee(@RequestParam("id") long id) {
+		employeeService.deleteById(id);
+		return "redirect:/employees";
+	}
+
 }

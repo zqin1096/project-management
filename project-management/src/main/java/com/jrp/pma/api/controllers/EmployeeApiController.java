@@ -49,7 +49,7 @@ public class EmployeeApiController {
 	// Need the CSRF token.
 	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public Employee updateEmployee(@RequestBody @Valid Employee employee, @PathVariable("id") Long id) {
+	public Employee updateEmployee(@RequestBody @Valid Employee employee, @PathVariable("id") long id) {
 		Employee e = employeeRepository.findById(id).get();
 		if (employee.getFirstName() != null) {
 			e.setFirstName(employee.getFirstName());

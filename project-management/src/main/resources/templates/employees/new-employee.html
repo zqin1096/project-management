@@ -8,6 +8,9 @@
 	<div class="container">
 		<form th:action="@{/employees/save}" th:object="${employee}" method="POST">
 
+			<!-- Used to update an employee -->
+			<input type="hidden" th:field="${employee.employeeId}">
+
 			<input type="text" placeholder="First Name" th:field="${employee.firstName}">
 
 			<input type="text" placeholder="Last Name" th:field="${employee.lastName}">
